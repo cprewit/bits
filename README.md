@@ -46,7 +46,7 @@ BITS
 
 # What is BITS?
 
-BITS (BITS Integrated Technology System) is designed to allow for the rapid development of modules that share base software. It is based on Google's polymer project and node.js. The goal is to reuse common components in multiple projects and harden these components through extensive use.
+BITS (BITS Integrated Technology System) is designed to allow for the rapid development of modules that share base software. It is based on Google's Polymer project and Node.js. The goal is to reuse common components across multiple projects and harden these components through extensive use.
 
 BITS can run on enterprise or embedded applications and can help jumpstart a project with initial functionality. A basic BITS implementation provides the following initial capabilities:
 
@@ -61,11 +61,11 @@ BITS can run on enterprise or embedded applications and can help jumpstart a pro
 
 # Quickstart
 
-BITS is built upon the NodeJS framework and requires that following
+BITS is built upon the Node.js framework and requires the following:
 
 
 * Linux Operating System, such as [Ubuntu LTS](https://www.ubuntu.com/download)
-* [NodeJS LTS](https://nodejs.org/en/download)
+* [Node.js LTS](https://nodejs.org/en/download)
 * [Yarn](https://yarnpkg.com/en/docs/install)
 * [Python 2.x](https://www.python.org/downloads)
 * [Pyserial](https://pythonhosted.org/pyserial)
@@ -76,7 +76,7 @@ BITS is built upon the NodeJS framework and requires that following
 Please consult these websites for directions on how to properly install these
 components for your Linux distribution.
 
-Once the pre-requisite items have been installed:
+Once the prerequisite items have been installed:
 
 ``` bash
 # Download BITS
@@ -95,13 +95,13 @@ BITS should now be running and is accessible at https://localhost:9001
 
 # Modules
 
-BITS is a framework built around modules. The base BITS framework is made useful with the creation and addition of module functionality. A module is run by BITS and provides a concrete and specific feature addition to the system. Examples of modules are GNSS (GPS), Networking, and MongoDB. Chances are you are interested in BITS as a means to build a module, or to use somebody else's module. Groups of modules that work together for a specific use case are Optimized Module Groupings (OMG).
+BITS is a framework built around modules. The base BITS framework is made useful with the creation and addition of module functionality. A module is run by BITS and provides a concrete and specific feature addition to the system. Examples of modules are GNSS (GPS), Networking, and MongoDB. Chances are you are interested in BITS as a means to build a module or to use somebody else's module. Groups of modules that work together for a specific use case can be packaged together as Optimized Module Groupings (OMG).
 
-Every module runs inside their own process and are installed to the base data directory in &lt;datadir&gt;/base/modules/modules.
+Every module runs inside its own process and is installed to the base data directory in &lt;datadir&gt;/base/modules/modules.
 
 ## package.json
 
-The package.json file specifies all the scripts and npm configurations for the bits module. Every package.json should have a scripts section with two scripts specified. bits:install and build. bits:install will run when an OMG or a module is uploaded to the system. bits:install should run everything your module needs to run on the system. bits:build is what is used to do a comprehensive build. This should include lint checks as well as running bits:install.
+The package.json file specifies all the scripts and npm configurations for the bits module. Every package.json should have a scripts section with two scripts specified: "bits:install" and "build". "bits:install" will run when an OMG or a module is uploaded to the system. "bits:install" should run everything your module needs to run on the system. "build" is what is used to do a comprehensive build. This should include lint checks as well as running "bits:install".
 
 ## module.json
 
@@ -109,7 +109,7 @@ BITS requires every module to have a module.json file. The module.json specifies
 
 ## index.js
 
-An index.js needs to be specified to run module code. The index.js should export two functions, load and unload. These methods pass the messageCenter for communication to other modules. There are additional details in following sections. The index.js should look like:
+An index.js needs to be specified to run module code. The index.js should export two functions: load and unload. These methods pass the messageCenter for communication to other modules. There are additional details in following sections. The index.js should look like:
 
 ```javascript
 (() => {
@@ -135,15 +135,15 @@ An index.js needs to be specified to run module code. The index.js should export
 
 # Optimized Module Groupings
 
-An Optimized Module Grouping (OMG) is a group of modules that make up a specific application.
+An Optimized Module Grouping (OMG) is a group of modules that are packaged together to make up a specific application.
 
-BITS uses OMGs to distribute groups of modules to the system. OMGs consist of a base version and a group of modules. When the OMG is loaded, the base will upgrade to the base in the OMG, install all the modules, and load them.
+BITS uses OMGs to distribute groups of modules to the system. OMGs consist of a base version and a group of modules. When the OMG is loaded, the base will upgrade to the base version included in the OMG, install all the included modules, and load them.
 
 ---
 
 # Scopes
 
-Bits uses an attribute based architecture for access control. Each user is assigned a set of scopes. The user is then only able to make requests or receive events that are tagged with the same scope as the request or event is tagged with. Normally, when a request or event listener is added the message center, the author specifies the scopes attribute in the second parameter.
+BITS uses an attribute based architecture for access control. Each user is assigned a set of scopes. The user is then only able to make requests or receive events that are tagged with the same scope as the request or event is tagged with. Normally, when a request or event listener is added to the message center, the author specifies the scopes attribute in the second parameter.
 
 ex
 
@@ -154,13 +154,13 @@ this._messageCenter.addRequestListener('myEvent', {scopes: ['scope1', 'scope2']}
 
 In this example only users that have the attributes of scope1 or scope2 will successfully make the request.
 
-Note: if scopes is null that means that no user can make the request and only server side code has access to the api.
+Note: if scopes is null that means that no user can make the request and only server side code has access to the API.
 
 ---
 
 # MessageCenter
 
-The core infrastructure to BITS is based around a system called the message center. The message center acts as an Inter Process Communication (IPC). All modules can use the message center to communicate data between each other as well as to the UI. The underlying framework of registering/deregistering for events is handled by MessageCenter.
+The core infrastructure of BITS is based around a system called the message center. The message center acts as an Inter Process Communication (IPC) mechanism. All modules can use the message center to communicate data between each other as well as to the UI. The underlying framework of registering/deregistering for events is handled by MessageCenter.
 
 #### Request Listeners
 
@@ -172,7 +172,7 @@ this._messageCenter.addRequestListener('myEvent', {scopes: null}, (name) => {
 })
 ```
 
-Then a user on the server side can make a request to this api such as:
+Then a user on the server side can make a request to this API such as:
 
 ``` javascript
 this._messageCenter.sendRequest('myEvent', {scopes: null}, 'Nic')
@@ -187,7 +187,7 @@ Note: On the client side you do not need to specify the scopes object as the ser
 
 #### Event Listeners
 
-Event listeners are used if a module has a change of data that he needs to update all the other modules with.
+Event listeners are used if a module has a change of data that it needs to update all the other modules with.
 
 If client module adds a listener like:
 
@@ -197,15 +197,15 @@ this._messageCenter.addEventListener('myEvent', {scopes: null}, (name) => {
 })
 ```
 
-Then anytime the server sends the event with data the function will fire.
+Then any time the server sends the event with data the function will fire.
 
 ``` javascript
 this._messageCenter.sendEvent('myEvent', {scopes: null}, 'Nic');
 ```
 
-The output from this will be "The server said Hello Nic";
+The output from this will be "The server said Hello Nic"
 
-Note: There are very few instances when you will have to directly access the message center normally you should use helper constructs or modules like settings, or crud;
+Note: There are very few instances when you will have to directly access the message center. Normally you should use helper constructs or modules like Settings, or crud.
 
 ## Server Side
 
@@ -213,7 +213,7 @@ The server side can add event listeners and request listeners by using a referen
 
 Event listeners are a one-to-many call. Many actors can subscribe to a single event. Anytime that event is sent on the message center, each one of them will get it. No response is sent back from event emitters.
 
-Request listeners are many-to-one. Only one actor can add a request listener, however, any actor can send a request for that data. Send request returns a promise with the data from the request listener return statement.
+Request listeners are many-to-one. Only one actor can add a request listener, however, any actor can send a request for that data. `sendRequest` returns a promise with the data from the request listener return statement.
 
 In order to send an event and request from the server side, you can use `messageCenter.sendRequest(request, metadata)` and `messageCenter.sendEvent(event, metadata)`
 
@@ -291,14 +291,14 @@ For the rules, the requester is the actor calling sendRequest and the handler is
 
 ### Recommended Pattern
 
-The above example is how one would directly add request listeners. However, this is not the recommended pattern. Instead we have developed a messenger pattern. Every subsystem should consist of 4 parts.
+The above example is how one would directly add request listeners. However, this is not the recommended pattern. Instead we have developed a messenger pattern. Every subsystem should consist of 4 parts:
 
 1. **Manager:** The manager is responsible for managing the data and flow of information.
 1. **Messenger:** The messenger is responsible for adding request and event listeners to the message center and passing along all requests to the master.
-1. **API:** The api element is a wrapper around sendRequests to all of the messengers calls. This allows modules to not have to change their code if the underlying request names change.
+1. **API:** The API element is a wrapper around sendRequests to all of the messengers calls. This allows modules to not have to change their code if the underlying request names change.
 1. **Router** More on this later but the router has the same role as the messenger but passes along REST API calls.
 
-Examples of these can all be seen in the base under each of the subsystems or by checking out the tutorial projects.
+Examples of these can be seen in the base under each of the subsystems or by checking out the tutorial projects.
 
 ---
 
@@ -312,15 +312,15 @@ The activity API provides a way for modules to add events to the activity. All a
 
 ## System
 
-Base has a system API that allows modules to get the BITS ID as well as restart, and shutdown the system.
+Base has a system API that allows modules to get the BITS ID as well as restart and shutdown the system.
 
 ## Authentication
 
-Base also has an API that allows modules to interact with the OMG and module subsystem to load, and unload modules.
+Base also has an API that allows modules to interact with the OMG and module subsystems to load and unload modules.
 
 ## Helper
 
-The helper API is used for modules to be able to add helper classes to the global. Helpers can be anything from helper classes, to API objects, or anything that you need other modules to be able to require.
+The helper API is used for modules to be able to add helper classes to the global scope. Helpers can be anything from helper classes, API objects, or anything that you need other modules to be able to require.
 
 Add something to `global`:
 
@@ -334,19 +334,19 @@ return Promise.resolve()
 
 ## Others
 
-Base is constantly being developed and improved. The base has a file called bits-base.js where all of bases APIs are added to the global. Check here for all current helpers and APIs for your modules to use.
+Base is constantly being developed and improved. The base has a file called bits-base.js where all of the base APIs are added to the global scope. Check here for all current helpers and APIs for your modules to use.
 
 ---
 
 # Module APIs
 
-Each module is responsible for opening up its own API to the system if it wants to provide services for other modules to use. This should be done through the message center and can be done by adding request listeners. Anytime a module makes a request, the modules request listener will handle the requests. Base provides APIs for modules to use and can be seen under the messengers folder. Each messenger opens up an API to the individual managers/subsystems. To add APIs for other modules to use, look at the helper API in the previous section.
+Each module is responsible for opening up its own API to the system if it wants to provide services for other modules to use. This should be done through the message center and can be done by adding request listeners. Anytime a module makes a request, the module's request listener will handle the requests. Base provides APIs for modules to use which can be found under the messengers folder. Each messenger opens up an API to the individual managers/subsystems. To add APIs for other modules to use, look at the helper API in the previous section.
 
 ---
 
 # Base Server
 
-The base hosts a web server that handles all web requests that are made to base. Base also acts as a proxy server, if modules want to add routes and endpoints they can subscribe the route with the base and get the request forwarded via proxy. To utilize this function use the BaseServer helper. More information on this below.
+The base hosts a web server that handles all web requests that are made to base. Base also acts as a proxy server. If modules want to add routes and endpoints they can subscribe the route with the base and get the request forwarded via proxy. To utilize this function use the BaseServer helper. More information on this below.
 
 # Authentication
 
@@ -431,21 +431,21 @@ this._modManApi.getDataDirectory('mod-name')
 
 ## Lazy Load
 
-The lazy load helper uses another modules apis without a hard dependency on the module. If the target module loads the then lazy load will call `onModuleLoad` and `onModuleUnload` respectively.
+The lazy load helper uses another module's APIs without a hard dependency on the module. If the target module loads then lazy load will call `onModuleLoad` and `onModuleUnload` respectively.
 
 ## Messenger
 
-The messenger subclass provides a `requestListener` manager that allows for an easier api to add listeners to the message center. All messengers should inherit from this subclass.
+The messenger subclass provides a `requestListener` manager that allows for an easier API to add listeners to the message center. All messengers should inherit from this subclass.
 
 ## Others
 
-All helpers can be found inside the helpers directory under lib. Check out the folder to see what other functions these helpers have. In many situations a solution to your problem could already be implemented here. Also make sure to check the npm store. NPM has thousands of additional helper objects.
+All helpers can be found inside the helpers directory under lib. Check out the folder to see what other functions these helpers have. In many situations a solution to your problem could already be implemented here. Also make sure to check the NPM store. NPM has thousands of additional helper objects.
 
 ---
 
 # Development
 
-BITS 2.x is a Node.js v6.x application. To installed Node.js on your machine visit the <a href="https://nodejs.org/en/" target="_blank">Node.js</a> website. The <a href="https://yarnpkg.com/" target="_blank">yarn</a> package manager is used to install node packages. BITS 2.x also uses <a href="https://bower.io/" target="_blank">bower</a> package manager for UI package dependencies. To setup the development environment install Node.js v6.x and run the npm `build` script.
+BITS 2.x is a Node.js v6.x application. To install Node.js on your machine visit the <a href="https://nodejs.org/en/" target="_blank">Node.js</a> website. The <a href="https://yarnpkg.com/" target="_blank">yarn</a> package manager is used to install node packages. BITS 2.x also uses <a href="https://bower.io/" target="_blank">bower</a> package manager for UI package dependencies. To setup the development environment install Node.js v6.x and run the npm `build` script.
 
 ``` bash
 # Install Node.js v6.x python-crypto python-serial python-netifaces python-magic
@@ -502,7 +502,7 @@ For example:
 ln -s ~/Projects/bits-modules/test-module data/base/modules/modules
 ```
 
-This prevents modules from being deleted by unloading  modules. Any module that is in this directory will be loaded by the system.
+This prevents module code from being deleted by unloading modules from the UI. Any module that is in this directory will be loaded by the system.
 
 ---
 
